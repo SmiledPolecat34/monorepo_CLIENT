@@ -1,10 +1,14 @@
 import "./App.css";
-import RegisterForm from "./components/model/registerForm";
+import "./styles/Login.css";
+import "./styles/Navbar.css";
+import Navbar from "./components/model/navbar";
+import MainRoutes from "./components/routes/main.routes";
 
 function App() {
   return (
     <div className="App">
-      <RegisterForm />
+      <Navbar />
+      <MainRoutes />
     </div>
   );
 }

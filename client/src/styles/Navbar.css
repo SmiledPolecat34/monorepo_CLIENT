@@ -1,0 +1,33 @@
+.Navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e2f;
+  padding: 15px 30px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.Navbar h1 {
+  margin: 0;
+  font-size: 20px;
+  color: #61dafb;
+}
+
+.Navbar nav {
+  display: flex;
+  gap: 20px;
+}
+
+.Navbar nav a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 16px;
+  transition: color 0.2s ease-in-out, border-bottom 0.2s;
+  padding-bottom: 3px;
+}
+
+.Navbar nav a:hover {
+  color: #61dafb;
+  border-bottom: 2px solid #61dafb;
+}

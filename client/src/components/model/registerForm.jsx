@@ -2,36 +2,31 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
+  const onSubmit = () => {
+    axios
+      .post("http://localhost:5000/api/auth/register", {
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        console.log(response);
+        alert("Inscription réussie !");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Il y a eu une erreur !", error);
+        alert("Erreur lors de l'inscription.");
       });
-
-      const { token } = response.data;
-      if (token) {
-        localStorage.setItem("token", token);
-        alert("Connexion réussie !");
-        navigate("/contacts");
-      } else {
-        alert("Réponse inattendue du serveur");
-      }
-    } catch (error) {
-      console.error("Erreur lors de la connexion :", error);
-      alert("Identifiants invalides ou erreur serveur.");
-    }
   };
 
   return (
     <div className="login-form">
-      <h2>Connexion</h2>
+      <h2>Inscription</h2>
       <form onSubmit={onSubmit} className="main-form">
         <input
           type="email"
@@ -47,7 +42,7 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Se connecter</button>
+        <button type="submit">S'inscrire</button>
       </form>
     </div>
   );
