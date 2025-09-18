@@ -7,10 +7,12 @@ export default function Contacts() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [editingContact, setEditingContact] = useState(null); // contact en cours d'édition
+  const [editingContact, setEditingContact] = useState(null);
   const [editFirstName, setEditFirstName] = useState("");
   const [editLastName, setEditLastName] = useState("");
   const [editPhone, setEditPhone] = useState("");
+
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     fetchContacts();
@@ -19,7 +21,7 @@ export default function Contacts() {
   async function fetchContacts() {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/contacts", {
+      const res = await axios.get(`${API_URL}/api/contacts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setContacts(res.data);
@@ -28,13 +30,12 @@ export default function Contacts() {
     }
   }
 
-  // Ajouter un contact
   async function handleAddContact(e) {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/contacts",
+        `${API_URL}/api/contacts`,
         { firstName, lastName, phone },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -47,11 +48,10 @@ export default function Contacts() {
     }
   }
 
-  // Supprimer un contact
   async function handleDeleteContact(id) {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/contacts/${id}`, {
+      await axios.delete(`${API_URL}/api/contacts/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchContacts();
@@ -60,7 +60,6 @@ export default function Contacts() {
     }
   }
 
-  // Préparer modification
   function startEdit(contact) {
     setEditingContact(contact._id);
     setEditFirstName(contact.firstName);
@@ -68,13 +67,12 @@ export default function Contacts() {
     setEditPhone(contact.phone);
   }
 
-  // Sauvegarder modification
   async function handleUpdateContact(e) {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
       await axios.patch(
-        `http://localhost:5000/api/contacts/${editingContact}`,
+        `${API_URL}/api/contacts/${editingContact}`,
         { firstName: editFirstName, lastName: editLastName, phone: editPhone },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -117,9 +115,14 @@ export default function Contacts() {
               </form>
             ) : (
               <>
-                <strong>{c.firstName} {c.lastName}</strong> — {c.phone}
+                <strong>
+                  {c.firstName} {c.lastName}
+                </strong>{" "}
+                — {c.phone}
                 <button onClick={() => startEdit(c)}>Modifier</button>
-                <button onClick={() => handleDeleteContact(c._id)}>Supprimer</button>
+                <button onClick={() => handleDeleteContact(c._id)}>
+                  Supprimer
+                </button>
               </>
             )}
           </li>
