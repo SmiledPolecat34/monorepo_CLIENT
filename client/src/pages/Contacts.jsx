@@ -16,6 +16,7 @@ export default function Contacts() {
 
   useEffect(() => {
     fetchContacts();
+    // eslint-disable-next-line
   }, []);
 
   async function fetchContacts() {
