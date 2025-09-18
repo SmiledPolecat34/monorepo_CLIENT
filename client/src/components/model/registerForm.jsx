@@ -6,22 +6,22 @@ export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_API_URL || process.env.API_URL;
 
-  const onSubmit = () => {
-    axios
-      .post("http://localhost:5000/api/auth/register", {
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        console.log(response);
-        alert("Inscription réussie !");
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.error("Il y a eu une erreur !", error);
-        alert("Erreur lors de l'inscription.");
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${API_URL}/api/auth/register`, {
+        email,
+        password,
       });
+      console.log(response.data);
+      alert("Inscription réussie !");
+      navigate("/login");
+    } catch (error) {
+      console.error("Il y a eu une erreur !", error);
+      alert("Erreur lors de l'inscription.");
+    }
   };
 
   return (
